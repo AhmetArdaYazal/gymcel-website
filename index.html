@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GYMCEL — Fitness & Sağlık Takip Uygulaması</title>
+    <meta name="description" content="Antrenman, vücut ölçüsü, kalori ve su takibini tek uygulamada yönet. GYMCEL ile sınırlarını aş.">
+    <meta property="og:title" content="GYMCEL — Fitness & Sağlık Takip">
+    <meta property="og:description" content="Antrenman takibi, AI antrenör, vücut analizi ve daha fazlası.">
+    <meta property="og:image" content="https://gym-cel.com/og-image.png">
+    <meta name="theme-color" content="#0E1012">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0E1012;
+            --card: #16181C;
+            --border: rgba(255,255,255,0.07);
+            --accent: #10B981;
+            --accent2: #8B5CF6;
+            --text: #F1F5F9;
+            --muted: #64748B;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(14,16,18,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo { font-size: 1.4rem; font-weight: 900; letter-spacing: -1px; }
+        .nav-logo span { color: var(--accent); }
+        .nav-cta {
+            background: var(--accent); color: #000; border: none;
+            padding: 0.55rem 1.25rem; border-radius: 10px;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(16,185,129,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25);
+            color: var(--accent); padding: 0.4rem 1rem; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 600; margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900; letter-spacing: -2px;
+            line-height: 1.05; margin-bottom: 1.25rem;
+        }
+        .hero h1 .accent { color: var(--accent); }
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--muted); max-width: 520px; margin: 0 auto 2.5rem;
+        }
+        .hero-buttons {
+            display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+        }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--accent); color: #000;
+            padding: 0.85rem 2rem; border-radius: 14px;
+            font-weight: 800; font-size: 1rem; text-decoration: none;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 8px 24px rgba(16,185,129,0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(16,185,129,0.4); }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(255,255,255,0.06); color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.85rem 2rem; border-radius: 14px;
+            font-weight: 700; font-size: 1rem; text-decoration: none;
+            transition: background 0.15s;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+        /* FEATURES */
+        .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .section-label {
+            text-align: center; color: var(--accent);
+            font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 0.75rem;
+        }
+        .section-title {
+            text-align: center; font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 800; letter-spacing: -1px; margin-bottom: 3rem;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .feature-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 1.75rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .feature-card:hover { border-color: rgba(16,185,129,0.3); transform: translateY(-4px); }
+        .feature-icon {
+            width: 48px; height: 48px; border-radius: 14px;
+            background: rgba(16,185,129,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; margin-bottom: 1rem;
+        }
+        .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .feature-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+
+        /* PRICING */
+        .pricing-section { padding: 5rem 2rem; background: rgba(255,255,255,0.02); }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem; max-width: 900px; margin: 0 auto;
+        }
+        .plan-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 24px; padding: 2rem; position: relative;
+        }
+        .plan-card.featured {
+            border-color: var(--accent2);
+            background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(139,92,246,0.02));
+        }
+        .plan-badge {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--accent2); color: #fff;
+            font-size: 0.7rem; font-weight: 800; letter-spacing: 1px;
+            padding: 0.3rem 0.9rem; border-radius: 20px;
+        }
+        .plan-name { font-size: 1rem; font-weight: 700; color: var(--muted); margin-bottom: 0.5rem; }
+        .plan-price { font-size: 2.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 0.25rem; }
+        .plan-price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+        .plan-features { list-style: none; margin: 1.5rem 0; }
+        .plan-features li {
+            display: flex; align-items: center; gap: 0.6rem;
+            font-size: 0.9rem; color: var(--muted); margin-bottom: 0.6rem;
+        }
+        .plan-features li::before { content: '✓'; color: var(--accent); font-weight: 800; }
+        .plan-btn {
+            display: block; width: 100%; padding: 0.85rem;
+            border-radius: 12px; text-align: center;
+            font-weight: 700; font-size: 0.95rem; text-decoration: none;
+            border: none; cursor: pointer;
+        }
+        .plan-btn-outline {
+            background: transparent; border: 1px solid var(--border); color: var(--text);
+        }
+        .plan-btn-filled { background: var(--accent); color: #000; }
+        .plan-btn-purple { background: var(--accent2); color: #fff; }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 2rem;
+            display: flex; flex-wrap: wrap; align-items: center;
+            justify-content: space-between; gap: 1rem;
+            max-width: 1100px; margin: 0 auto;
+        }
+        .footer-logo { font-size: 1.2rem; font-weight: 900; }
+        .footer-logo span { color: var(--accent); }
+        .footer-links { display: flex; gap: 1.5rem; }
+        .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; }
+        .footer-links a:hover { color: var(--text); }
+        .footer-copy { color: var(--muted); font-size: 0.8rem; width: 100%; text-align: center; margin-top: 1rem; }
+
+        @media (max-width: 600px) {
+            nav { padding: 0.75rem 1rem; }
+            .hero { padding: 6rem 1.25rem 3rem; }
+            footer { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-logo">GYM<span>CEL</span></div>
+    <a href="https://play.google.com/store/apps/details?id=com.gymcel.app" class="nav-cta">İndir</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-badge">🚀 Şimdi Google Play'de</div>
+    <h1>Sınırlarını <span class="accent">Aş</span></h1>
+    <p>Antrenman takibi, AI antrenör, vücut analizi ve kalori yönetimini tek uygulamada topla.</p>
+    <div class="hero-buttons">
+        <a href="https://play.google.com/store/apps/details?id=com.gymcel.app" class="btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83 1-.83 1.5-.5l15 8.5-15 8.5c-.5.33-1.5.33-1.5-.5z"/></svg>
+            Google Play'den İndir
+        </a>
+        <a href="#ozellikler" class="btn-secondary">Özellikler →</a>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<div id="ozellikler">
+<div class="section">
+    <div class="section-label">Özellikler</div>
+    <h2 class="section-title">Her şey tek bir yerde</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🏋️</div>
+            <h3>Antrenman Takibi</h3>
+            <p>Set, tekrar ve ağırlık kayıtlarını tut. Egzersiz geçmişini analiz et, kişisel rekorlarını kır.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>AI Antrenör</h3>
+            <p>Verilerine göre kişiselleştirilmiş program önerileri al. Sorularını sor, anında cevap al.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Vücut Analizi</h3>
+            <p>Kilo, vücut ölçüleri ve BMI takibi yap. İlerlemenizi grafiklerle görselleştir.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💧</div>
+            <h3>Su & Kalori Takibi</h3>
+            <p>Günlük su alımını ve kalori dengesini takip et. Hedeflerine ulaşmak için motive kal.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🩸</div>
+            <h3>Kan Değerleri</h3>
+            <p>Tahlil sonuçlarını kaydet, zaman içindeki değişimleri takip et.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3>Antrenör Platformu</h3>
+            <p>Birden fazla öğrenci profili yönet. Her öğrenci için ayrı takip ve analiz.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- PRICING -->
+<div id="fiyatlar">
+<div class="pricing-section">
+    <div class="section-label" style="text-align:center;">Fiyatlandırma</div>
+    <h2 class="section-title">Sana uygun planı seç</h2>
+    <div class="pricing-grid">
+        <!-- Free -->
+        <div class="plan-card">
+            <div class="plan-name">Ücretsiz</div>
+            <div class="plan-price">₺0 <span>/ ay</span></div>
+            <ul class="plan-features">
+                <li>Sınırsız antrenman kaydı</li>
+                <li>Vücut ölçü takibi</li>
+                <li>Su & kalori takibi</li>
+                <li>AI asistan (günde 2 mesaj)</li>
+                <li>Temel analizler</li>
+            </ul>
+            <a href="https://play.google.com/store/apps/details?id=com.gymcel.app" class="plan-btn plan-btn-outline">Ücretsiz İndir</a>
+        </div>
+        <!-- Pro -->
+        <div class="plan-card">
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">₺59 <span>/ ay</span></div>
+            <ul class="plan-features">
+                <li>Ücretsiz planın her şeyi</li>
+                <li>Sınırsız AI antrenör</li>
+                <li>Reklamsız deneyim</li>
+                <li>Gelişmiş analizler</li>
+                <li>Öncelikli destek</li>
+            </ul>
+            <a href="https://play.google.com/store/apps/details?id=com.gymcel.app" class="plan-btn plan-btn-filled">Başla</a>
+        </div>
+        <!-- Trainer Pro -->
+        <div class="plan-card featured">
+            <div class="plan-badge">ANTRENÖRLER İÇİN</div>
+            <div class="plan-name">Antrenör Pro</div>
+            <div class="plan-price">₺109 <span>/ ay</span></div>
+            <ul class="plan-features">
+                <li>Pro planın her şeyi</li>
+                <li>Çoklu öğrenci profili</li>
+                <li>Öğrenci takip paneli</li>
+                <li>Antrenör araçları</li>
+                <li>Öncelikli destek</li>
+            </ul>
+            <a href="https://play.google.com/store/apps/details?id=com.gymcel.app" class="plan-btn plan-btn-purple">Antrenör Olarak Başla</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">GYM<span>CEL</span></div>
+    <div class="footer-links">
+        <a href="/privacy.html">Gizlilik Politikası</a>
+        <a href="/terms.html">Kullanım Şartları</a>
+        <a href="mailto:gymcelapp@gmail.com">İletişim</a>
+    </div>
+    <div class="footer-copy">© 2025 GYMCEL. Tüm hakları saklıdır.</div>
+</footer>
+
+</body>
+</html>
